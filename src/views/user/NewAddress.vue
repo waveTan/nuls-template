@@ -9,15 +9,15 @@
         <p class="font14"><i></i>请认真保存钱包密码，NULS钱包不存储密码，也无法帮您找回，请务必牢记</p>
       </div>
 
-      <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" class="pass-form w630">
+      <el-form :model="newAddressForm" status-icon :rules="newAddressRules" ref="newAddressForm" class="pass-form w630">
         <el-form-item label="密码" prop="pass">
-          <el-input type="password" v-model="ruleForm.pass" autocomplete="off"></el-input>
+          <el-input type="password" v-model="newAddressForm.pass" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="checkPass">
-          <el-input type="password" v-model="ruleForm.checkPass" autocomplete="off"></el-input>
+          <el-input type="password" v-model="newAddressForm.checkPass" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item class="form-bnt">
-          <el-button type="success" @click="submitForm('ruleForm')">创建账户</el-button>
+          <el-button type="success" @click="submitForm('newAddressForm')">创建账户</el-button>
           <el-button type="text" @click="toUrl('importAddress')">导入账户</el-button>
         </el-form-item>
       </el-form>
@@ -27,41 +27,46 @@
 </template>
 
 <script>
+  import nuls from 'nuls-sdk-js'
+  import {API_CHAIN_ID} from '@/config'
+  import {chainIdNumber} from '@/api/util'
+  import {getAddressInfoByAddress} from '@/api/requestData'
+
   export default {
     data() {
       let validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
         } else {
-          if (this.ruleForm.checkPass !== '') {
-            this.$refs.ruleForm.validateField('checkPass');
+          if (this.newAddressForm.checkPass !== '') {
+            this.$refs.newAddressForm.validateField('checkPass');
           }
           callback();
         }
       };
-      let validatePass2 = (rule, value, callback) => {
+      let validateCheckPass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再次输入密码'));
-        } else if (value !== this.ruleForm.pass) {
+        } else if (value !== this.newAddressForm.pass) {
           callback(new Error('两次输入密码不一致!'));
         } else {
           callback();
         }
       };
       return {
-        ruleForm: {
-          pass: '',
-          checkPass: '',
-          age: ''
+        newAddressForm: {
+          pass: 'nuls123456',
+          checkPass: 'nuls123456',
         },
-        rules: {
+        newAddressRules: {
           pass: [
             {validator: validatePass, trigger: 'blur'}
           ],
           checkPass: [
-            {validator: validatePass2, trigger: 'blur'}
+            {validator: validateCheckPass, trigger: 'blur'}
           ]
-        }
+        },
+        newAddressInfo: {},//创建地址信息
       };
     },
     methods: {
@@ -70,17 +75,30 @@
        *  创建账户提交
        * @param formName
        **/
-      submitForm(formName) {
+      async submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            this.newAddressInfo = nuls.newAddress(API_CHAIN_ID, this.newAddressForm.pass);
+            this.getAddressInfoByAddress(this.newAddressInfo.address);
           } else {
-            console.log('error submit!!');
             return false;
           }
         });
       },
 
+      //获取账户信息根据创建的地址
+      async getAddressInfoByAddress(address) {
+        let addressInfo = await getAddressInfoByAddress(address);
+        let newAdressInfo = {...this.newAddressInfo, ...addressInfo.data};
+        if (addressInfo.success) {
+          localStorage.setItem(chainIdNumber(), JSON.stringify(newAdressInfo));
+          this.$router.push({
+            name: 'home'
+          });
+        } else {
+          this.$message({message: "创建地址错误: " + addressInfo.data.error.message, type: 'error', duration: 2000});
+        }
+      },
       /**
        * 连接跳转
        * @param name
