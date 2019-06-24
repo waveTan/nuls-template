@@ -55,8 +55,8 @@
       };
       return {
         newAddressForm: {
-          pass: 'nuls123456',
-          checkPass: 'nuls123456',
+          pass: '',
+          checkPass: '',
         },
         newAddressRules: {
           pass: [

@@ -1,7 +1,7 @@
 <template>
   <div class="home w1200">
     <div class="address">
-      <span>地址: {{addressInfo.address}}</span> <font> 余额：{{addressInfo.totalBalance}} NULS</font>
+      <span>地址: {{addressInfo.address}}</span> <font> 余额：{{addressInfo.totalBalance/100000000}} NULS</font>
     </div>
   </div>
 </template>
