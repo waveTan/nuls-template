@@ -1,4 +1,5 @@
 import {BigNumber} from 'bignumber.js'
+import copy from 'copy-to-clipboard'
 import {API_CHAIN_ID} from './../config'
 
 /**
@@ -59,6 +60,12 @@ export function Division(nu, arg) {
   let newDiv = new BigNumber(nu);
   return newDiv.div(arg);
 }
+
+/**
+ * 复制 copy
+ * @param value
+ */
+export const copys = (value) => copy(value);
 
 /**
  * 数字除以精度系数

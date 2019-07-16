@@ -1,22 +1,50 @@
 <template>
-  <div class="home w1200">
-    <div class="address">
-      <span>地址: {{addressInfo.address}}</span> <font> 余额：{{addressInfo.totalBalance/100000000}} NULS</font>
-    </div>
+  <div class="home">
+    home
   </div>
 </template>
 
 <script>
-  import {chainIdNumber} from '@/api/util'
-
   export default {
     data() {
-      return {
-        addressInfo: JSON.parse(localStorage.getItem(chainIdNumber())),//地址信息
-      };
+      return {};
     },
     created() {
     },
     methods: {}
   }
 </script>
+
+<style lang="less">
+  .home {
+    .carousel {
+      height: 400px;
+      width: 100%;
+      border-bottom: 1px solid #5e6983;
+    }
+    .w1200 {
+      height: 450px;
+      .left, .right {
+        width: 50%;
+        p {
+          font-size: 18px;
+          font-weight: bold;
+          line-height: 36px;
+          color: #000000;
+          width: 500px;
+          margin: 100px auto 70px;
+        }
+        .el-button {
+          display: block;
+          width: 200px;
+          height: 40px;
+          margin: 0 0 0 50px;
+        }
+        .el-button--success {
+          margin: 20px 0 0 50px;
+        }
+      }
+    }
+  }
+
+</style>

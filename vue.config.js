@@ -1,6 +1,3 @@
-const CompressionWebpackPlugin = require('compression-webpack-plugin');
-const productionGzipExtensions = ['js', 'css'];
-const isProduction = process.env.NODE_ENV === 'production';
 module.exports = {
   pluginOptions: {
     i18n: {
@@ -10,24 +7,6 @@ module.exports = {
       enableInSFC: false
     }
   },
-
-  configureWebpack: config => {
-    if (isProduction) {
-      config.plugins.push(new CompressionWebpackPlugin({
-        algorithm: 'gzip',
-        test: new RegExp('\\.(' + productionGzipExtensions.join('|') + ')$'),
-        threshold: 10240,
-        minRatio: 0.8
-      }));
-      config.externals = {
-        'vue': 'Vue',
-        'vue-router': 'VueRouter',
-        'moment': 'moment',
-        /*'element-ui': 'ELEMENT',*/
-      }
-    }
-  },
-
   baseUrl: undefined,
   outputDir: undefined,
   assetsDir: undefined,
@@ -43,7 +22,7 @@ module.exports = {
     sourceMap: true
   },
   devServer: {
-    port: 8080,
+    port: 8081,
     host: '0.0.0.0',
     https: false, // https:{type:Boolean}
     open: true, //配置自动启动浏览器

@@ -29,7 +29,6 @@
 <script>
   import nuls from 'nuls-sdk-js'
   import {API_CHAIN_ID} from '@/config'
-  import {chainIdNumber} from '@/api/util'
   import {getAddressInfoByAddress} from '@/api/requestData'
 
   export default {
@@ -91,14 +90,15 @@
         let addressInfo = await getAddressInfoByAddress(address);
         let newAdressInfo = {...this.newAddressInfo, ...addressInfo.data};
         if (addressInfo.success) {
-          localStorage.setItem(chainIdNumber(), JSON.stringify(newAdressInfo));
+          localStorage.setItem('accountInfo', JSON.stringify(newAdressInfo));
           this.$router.push({
-            name: 'home'
+            name: 'backupsAddress'
           });
         } else {
           this.$message({message: "创建地址错误: " + addressInfo.data.error.message, type: 'error', duration: 2000});
         }
       },
+
       /**
        * 连接跳转
        * @param name
