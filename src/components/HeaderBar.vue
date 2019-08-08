@@ -6,16 +6,22 @@
       </div>
       <div class="nav fl">
         <el-menu :default-active="activeIndex" class="fl" mode="horizontal" @select="handleSelect">
-          <el-menu-item index="1"><i class="el-icon-share"></i>模块仓库</el-menu-item>
-          <el-menu-item index="3"><i class="el-icon-video-camera-solid"></i>搭建区块链</el-menu-item>
+          <el-menu-item index="1"><i class="el-icon-share"></i>首页</el-menu-item>
+          <el-menu-item index="2"><i class="el-icon-video-camera-solid"></i>导航一</el-menu-item>
+          <div class="user click fr tc">
+            <div v-if="!accountAddress">
+              <el-link type="primary" @click="toUrl('newAddress')" v-if="!accountAddress">登陆
+              </el-link>
+            </div>
+            <div class="user_info" v-else>
+              <el-submenu index="user">
+                <template slot="title"><i class="el-icon-s-custom click " @click="toUrl('backupsAddress')"></i>&nbsp;</template>
+                <el-menu-item index="signOut">退出 <!--<span class="click tc" @click="signOut">退出</span>--></el-menu-item>
+                <el-menu-item index="userInfo">用户中心</el-menu-item>
+              </el-submenu>
+            </div>
+          </div>
         </el-menu>
-        <el-link type="primary" @click="toUrl('newAddress')" class="user click fr tc" v-if="!accountAddress">登陆
-        </el-link>
-        <div v-else>
-          <i class="el-icon-s-custom click " @click="toUrl('backupsAddress')"></i>&nbsp;
-          <span class="click tc" @click="signOut">退出</span>
-        </div>
-
       </div>
     </div>
     <div class="cb"></div>
@@ -49,6 +55,9 @@
        */
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
+        if(key === 'signOut'){
+          this.signOut();
+        }
       },
 
       /**
@@ -87,9 +96,11 @@
     }
     .nav {
       width: 1050px;
+      height: 79px;
       .el-menu.el-menu--horizontal {
         border-bottom: 0;
         width: 950px;
+        height: 79px;
         .el-menu-item {
           height: 79px;
           line-height: 80px;
@@ -106,6 +117,23 @@
       .user {
         width: 100px;
         line-height: 80px;
+        .user_info{
+          .el-submenu{
+            &:hover{
+              background-color: transparent;
+            }
+            .el-submenu__title{
+              line-height: 20px;
+              height: 20px;
+              margin: 25px auto 0;
+              padding: 0;
+              width: 25px;
+              .el-icon-arrow-down{
+                font-size: 0;
+              }
+            }
+          }
+        }
       }
     }
   }
