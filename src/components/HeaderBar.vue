@@ -15,9 +15,11 @@
             </div>
             <div class="user_info" v-else>
               <el-submenu index="user">
-                <template slot="title"><i class="el-icon-s-custom click " @click="toUrl('backupsAddress')"></i>&nbsp;</template>
-                <el-menu-item index="signOut">退出 <!--<span class="click tc" @click="signOut">退出</span>--></el-menu-item>
+                <template slot="title">
+                  <i class="el-icon-s-custom click " @click="toUrl('backupsAddress')"></i>&nbsp;
+                </template>
                 <el-menu-item index="userInfo">用户中心</el-menu-item>
+                <el-menu-item index="signOut">退出 <!--<span class="click tc" @click="signOut">退出</span>--></el-menu-item>
               </el-submenu>
             </div>
           </div>
@@ -55,7 +57,7 @@
        */
       handleSelect(key, keyPath) {
         console.log(key, keyPath);
-        if(key === 'signOut'){
+        if (key === 'signOut') {
           this.signOut();
         }
       },
@@ -117,18 +119,18 @@
       .user {
         width: 100px;
         line-height: 80px;
-        .user_info{
-          .el-submenu{
-            &:hover{
+        .user_info {
+          .el-submenu {
+            &:hover {
               background-color: transparent;
             }
-            .el-submenu__title{
+            .el-submenu__title {
               line-height: 20px;
               height: 20px;
               margin: 25px auto 0;
               padding: 0;
               width: 25px;
-              .el-icon-arrow-down{
+              .el-icon-arrow-down {
                 font-size: 0;
               }
             }
