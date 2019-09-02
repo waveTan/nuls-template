@@ -59,7 +59,6 @@
   import {API_CHAIN_ID, API_PREFIX} from '@/config'
   import {getAddressInfoByAddress} from '@/api/requestData'
   import {passwordVerification, connect} from '@/api/util'
-  import BackBar from '@/components/BackBar'
   import Password from '@/components/PasswordBar'
 
   export default {
@@ -152,7 +151,6 @@
       };
     },
     components: {
-      BackBar,
       Password
     },
     created() {
@@ -330,9 +328,6 @@
           margin: 60px auto 100px;
         }
       }
-
     }
-
   }
-
 </style>

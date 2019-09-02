@@ -50,6 +50,18 @@ export function Plus(nu, arg) {
 }
 
 /**
+ * 除法
+ * @param nu
+ * @param arg
+ * @returns {BigNumber}
+ * @constructor
+ */
+export function Division(nu, arg) {
+  let newDiv = new BigNumber(nu);
+  return newDiv.div(arg);
+}
+
+/**
  * 数字除以精度系数
  */
 export function divisionDecimals(nu, decimals = 8) {
