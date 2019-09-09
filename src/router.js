@@ -1,8 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home'
-import NewAddress from './views/user/NewAddress'
-import BackupsAddress from './views/user/BackupsAddress'
 
 Vue.use(Router);
 
@@ -11,17 +8,17 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: resolve => require(['@/views/Home.vue'], resolve)
     },
     {
       path: '/NewAddress',
       name: 'newAddress',
-      component: NewAddress
+      component: resolve => require(['@/views/user/NewAddress.vue'], resolve)
     },
     {
       path: '/BackupsAddress',
       name: 'backupsAddress',
-      component: BackupsAddress
+      component: resolve => require(['@/views/user/BackupsAddress.vue'], resolve)
     }
 
   ]
