@@ -1,5 +1,5 @@
 <template>
-  <el-dialog title="请输入密码" :visible.sync="passwordVisible" top="30vh" width="30rem"
+  <el-dialog :title="$t('tips.password0')" :visible.sync="passwordVisible" top="30vh" width="30rem"
              class="password-dialog"
              :close-on-click-modal="false"
              :close-on-press-escape="false"
@@ -13,8 +13,8 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="passwordClose">取 消</el-button>
-      <el-button type="success" @click="dialogSubmit('passwordForm')" id="passwordInfo">确 定
+      <el-button @click="passwordClose">{{$t('public.cancel')}}</el-button>
+      <el-button type="success" @click="dialogSubmit('passwordForm')" id="passwordInfo">{{$t('public.confirm')}}
       </el-button>
     </div>
   </el-dialog>
@@ -26,7 +26,7 @@
     data() {
       let validatePass = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error("请输入密码"))
+          callback(new Error(this.$t('tips.password0')))
         } else {
           callback()
         }

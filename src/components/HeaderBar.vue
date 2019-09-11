@@ -6,24 +6,31 @@
       </div>
       <div class="nav fl">
         <el-menu :default-active="activeIndex" class="fl" mode="horizontal" @select="handleSelect">
-          <el-menu-item index="1"><i class="el-icon-share"></i>首页</el-menu-item>
-          <el-menu-item index="2"><i class="el-icon-video-camera-solid"></i>导航一</el-menu-item>
-          <div class="user click fr tc">
-            <div v-if="!accountAddress">
-              <el-link type="primary" @click="toUrl('newAddress')" v-if="!accountAddress">登陆
-              </el-link>
-            </div>
-            <div class="user_info" v-else>
-              <el-submenu index="user">
-                <template slot="title">
-                  <i class="el-icon-s-custom click " @click="toUrl('backupsAddress')"></i>&nbsp;
-                </template>
-                <el-menu-item index="userInfo">用户中心</el-menu-item>
-                <el-menu-item index="signOut">退出 <!--<span class="click tc" @click="signOut">退出</span>--></el-menu-item>
-              </el-submenu>
-            </div>
-          </div>
+          <el-menu-item index="projects">{{$t('nav.selectItem')}}</el-menu-item>
+          <el-menu-item index="token">{{$t('nav.issueToken')}}</el-menu-item>
         </el-menu>
+        <div class="user fr tc">
+          <div class="height fl">
+            <i class="el-icon-s-grid fCN"></i>
+            <span> {{height}} </span>
+          </div>
+          <div class="fr">
+            <div class="user_info fl" v-if="accountAddress">
+              <el-menu mode="horizontal" @select="handleSelect" class="user_menu">
+                <el-submenu index="user">
+                  <template slot="title"><i class="el-icon-s-custom click "></i>&nbsp;
+                  </template>
+                  <el-menu-item index="userInfo">{{$t('nav.user')}}</el-menu-item>
+                  <el-menu-item index="backupsAddress">{{$t('nav.backup')}}</el-menu-item>
+                  <el-menu-item index="signOut">{{$t('nav.signOut')}}</el-menu-item>
+                </el-submenu>
+              </el-menu>
+            </div>
+            <div v-if="!accountAddress" class="click font14 fl landing" @click="toUrl('newAddress')">{{$t('nav.login')}}</div>
+            <div class="language fr font14 click" @click="selectLanguage">{{lang === 'en' ? '简体中文':'English' }}</div>
+          </div>
+        </div>
+
       </div>
     </div>
     <div class="cb"></div>
@@ -31,33 +38,59 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import {POCM_API_URL} from '@/config'
+
   export default {
     data() {
       return {
         activeIndex: '1',//导航选中
         accountInfo: {},//账户信息
-        accountAddress: '',
+        accountAddress: '',//账户地址
+        height: 0,//最新高度
+        lang: 'en',
       };
     },
     created() {
+      this.getBestBlockHeader();
+    },
+    mounted() {
       setInterval(() => {
         if (localStorage.hasOwnProperty('accountInfo')) {
           this.accountInfo = JSON.parse(localStorage.getItem('accountInfo'));
           this.accountAddress = this.accountInfo.address;
         }
       }, 500);
-    },
 
+      setInterval(() => {
+        this.getBestBlockHeader()
+      }, 10000)
+    },
     methods: {
+
+      /**
+       * 语言切换
+       */
+      selectLanguage() {
+        this.lang = this.lang === 'en' ? 'cn' : 'en';
+        sessionStorage.setItem('lang', this.lang);
+        this.$i18n.locale = this.lang;
+      },
 
       /**
        * 导航切换
        * @param key
-       * @param keyPath
        */
-      handleSelect(key, keyPath) {
-        console.log(key, keyPath);
-        if (key === 'signOut') {
+      handleSelect(key) {
+        if (key === 'projects') {
+          this.toUrl('projectsList')
+        } else if (key === 'token') {
+          this.toUrl('newToken')
+        } else if (key === 'userInfo') {
+          this.getAuthorization(this.accountInfo.address);
+        } else if (key === 'backupsAddress') {
+          this.toUrl('backupsAddress');
+        } else if (key === 'signOut') {
           this.signOut();
         }
       },
@@ -69,6 +102,67 @@
         localStorage.removeItem('accountInfo');
         this.accountInfo = {};
         this.accountAddress = '';
+        this.toUrl('newAddress')
+      },
+
+      /**
+       * @disc: 判断地址是否为创建项目者
+       * @params: address
+       * @date: 2019-08-26 16:58
+       * @author: Wave
+       */
+      async getAuthorization(address) {
+        const url = POCM_API_URL + '/pocm/authorization/list';
+        const data = {address: address};
+        await axios.post(url, data)
+          .then((response) => {
+            //console.log(response.data);
+            if (response.data.success) {
+              if (response.data.data.length === 0) {
+                this.toUrl('user')
+              } else {
+                if (response.data.data[0].status === 0) {
+                  this.$router.push({
+                    name: 'newPocm',
+                    query: {
+                      authorizationCode: response.data.data[0].authorizationCode,
+                      releaseId: response.data.data[0].releaseId
+                    }
+                  })
+                } else {
+                  this.$router.push({
+                    name: 'pocmUser',
+                  });
+                  sessionStorage.setItem("data", JSON.stringify(response.data.data[0]))
+                }
+              }
+            } else {
+              this.toUrl('user');
+              this.$message({message: "对不起，获取项目发布者错误！", type: 'error', duration: 3000});
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            this.$message({message: "对不起，获取项目发布者异常！", type: 'error', duration: 3000});
+          })
+      },
+
+      /**
+       * 获取最新高度
+       */
+      getBestBlockHeader() {
+        this.$post('/', 'getBestBlockHeader', [])
+          .then((response) => {
+            //console.log(response)
+            if (response.hasOwnProperty("result")) {
+              this.height = response.result.height;
+            } else {
+              this.height = 0;
+            }
+          }).catch((error) => {
+          this.height = 0;
+          console.log(error);
+        })
       },
 
       /**
@@ -88,27 +182,33 @@
   @import "./../assets/css/style";
 
   .header {
-    border-bottom: @BD1;
-    height: 80px;
-    line-height: 80px;
+    border-bottom: 1px solid #bebebe;
+    height: 100px;
+    line-height: 100px;
     .logo {
-      width: 150px;
+      width: 104px;
       margin: 18px 0 0 0;
-      height: 62px;
+      height: 42px;
     }
     .nav {
-      width: 1050px;
-      height: 79px;
+      width: 1095px;
+      height: 98px;
       .el-menu.el-menu--horizontal {
         border-bottom: 0;
-        width: 950px;
-        height: 79px;
+        width: 850px;
+        height: 98px;
         .el-menu-item {
-          height: 79px;
-          line-height: 80px;
-          font-size: 16px;
+          height: 98px;
+          line-height: 100px;
+          padding: 0;
+          margin: 0 25px;
+          font-size: 18px;
+          color: #333;
           &:hover {
             color: @Ncolour;
+          }
+          &:first-child {
+            margin-left: 75px;
           }
         }
         .is-active {
@@ -117,25 +217,49 @@
         }
       }
       .user {
-        width: 100px;
-        line-height: 80px;
+        .height {
+          width: 120px;
+          float: left;
+          line-height: 105px;
+        }
         .user_info {
-          .el-submenu {
-            &:hover {
-              background-color: transparent;
-            }
-            .el-submenu__title {
-              line-height: 20px;
-              height: 20px;
-              margin: 25px auto 0;
-              padding: 0;
-              width: 25px;
-              .el-icon-arrow-down {
-                font-size: 0;
+          width: 28px;
+          .user_menu {
+            width: 28px;
+            text-align: center;
+            .el-submenu {
+              &:hover {
+                background-color: transparent;
+              }
+              .el-submenu__title {
+                line-height: 20px;
+                height: 20px;
+                margin: 40px auto 0;
+                padding: 0;
+                width: 25px;
+                border: 0;
+                &:hover {
+                  background-color: transparent;
+                }
+                .el-icon-arrow-down {
+                  font-size: 0;
+                }
               }
             }
           }
         }
+        .language {
+          width: 70px;
+          line-height: 105px;
+          margin-left: 20px;
+        }
+      }
+      .landing {
+        width: 30px;
+        line-height: 105px;
+        text-align: center;
+        z-index: 99;
+        position: relative;
       }
     }
   }

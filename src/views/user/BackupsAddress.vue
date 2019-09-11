@@ -1,32 +1,33 @@
 <template>
   <div class="backups-address bg-gray">
     <div class="bg-white">
-      <h3 class="title">备份</h3>
+      <h3 class="title tc">{{$t('backupsAddress.backupsAddress0')}}</h3>
     </div>
     <div class="tab bg-white w1200 mt_30">
       <div class="address w630">
         <p>
-          您的地址:
-          &nbsp;<span class="yellow">{{accountAddress.address}}</span>
-          &nbsp;<i class="el-icon-document-copy click" @click="copy(accountAddress.address)"></i></p>
+          {{$t('backupsAddress.backupsAddress1')}}
+          <span class="yellow">{{accountAddress.address}}</span>
+          &nbsp;<i class="el-icon-document-copy click" @click="copy(accountAddress.address)"></i>
+        </p>
       </div>
       <div class="tips bg-gray w630">
-        <p class="font14"><i></i>请设置密码用以导入账户、转账、参与共识等重要行为验证</p>
-        <p class="font14"><i></i>请认真保存钱包密码，NULS钱包不存储密码，也无法帮您找回，请务必牢记</p>
+        <p class="font14"><i></i> {{$t('backupsAddress.backupsAddress2')}}</p>
+        <p class="font14"><i></i> {{$t('backupsAddress.backupsAddress3')}}</p>
       </div>
 
       <div class="w630 tc btn-next">
         <div>
-          <el-button type="success" @click="backupsKey">私钥备份</el-button>
+          <el-button type="success" @click="backupsKey">{{$t('backupsAddress.backupsAddress4')}}</el-button>
         </div>
         <div class="mt_20">
-          <el-button @click="toUrl('home')">完成备份</el-button>
+          <el-button @click="toUrl('home')"> {{$t('backupsAddress.backupsAddress5')}}</el-button>
         </div>
       </div>
     </div>
     <Password ref="password" @passwordSubmit="passSubmit">
     </Password>
-    <el-dialog title="安全警告:私钥未经加密，备份存在风险，请保存到安全的地方，建议使用Keystore进行备份" width="40%"
+    <el-dialog :title="$t('backupsAddress.backupsAddress6')" width="40%"
                :visible.sync="keyDialog"
                :close-on-click-modal="false"
                :close-on-press-escape="false"
@@ -36,7 +37,7 @@
         {{accountAddress.pri}}
       </p>
       <span slot="footer" class="dialog-footer">
-        <el-button type="success" @click="copy(accountAddress.pri)">复制</el-button>
+        <el-button type="success" @click="copy(accountAddress.pri)">{{$t('public.copy')}}</el-button>
       </span>
     </el-dialog>
   </div>
@@ -45,7 +46,8 @@
 <script>
   import nuls from 'nuls-sdk-js'
   import Password from '@/components/PasswordBar'
-  import {chainID} from '@/api/util'
+  import {API_CHAIN_ID, API_PREFIX} from '@/config'
+  import {copys} from '@/api/util'
 
   export default {
     components: {Password},
@@ -63,7 +65,7 @@
        **/
       async passSubmit(password) {
         const pri = nuls.decrypteOfAES(this.accountAddress.aesPri, password);
-        const newAddressInfo = nuls.importByKey(chainID(), pri, password);
+        const newAddressInfo = nuls.importByKey(API_CHAIN_ID, pri, password, API_PREFIX);
         if (newAddressInfo.address === this.accountAddress.address) {
           this.keyDialog = true;
           this.accountAddress.pri = pri;
@@ -92,8 +94,8 @@
        * @param sting
        **/
       copy(sting) {
-        console.log(sting);
-        this.$message({message: "复制完成", type: 'success', duration: 1000});
+        copys(sting);
+        this.$message({message: this.$t('public.copyComplete'), type: 'success', duration: 1000});
       },
     }
   }
@@ -104,6 +106,11 @@
 
   .backups-address {
     .bg-white {
+      height: 100px;
+      .title {
+        margin: 20px auto 10px;
+        font-size: 30px;
+      }
     }
     .tab {
       .address {
