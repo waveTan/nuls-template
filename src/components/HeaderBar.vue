@@ -6,8 +6,8 @@
       </div>
       <div class="nav fl">
         <el-menu :default-active="activeIndex" class="fl" mode="horizontal" @select="handleSelect">
-          <el-menu-item index="projects">{{$t('nav.selectItem')}}</el-menu-item>
-          <el-menu-item index="token">{{$t('nav.issueToken')}}</el-menu-item>
+          <el-menu-item index="page1">{{$t('nav.selectItem')}}</el-menu-item>
+          <el-menu-item index="page2">{{$t('nav.issueToken')}}</el-menu-item>
         </el-menu>
         <div class="user fr tc">
           <div class="height fl">
@@ -26,11 +26,12 @@
                 </el-submenu>
               </el-menu>
             </div>
-            <div v-if="!accountAddress" class="click font14 fl landing" @click="toUrl('newAddress')">{{$t('nav.login')}}</div>
+            <div v-if="!accountAddress" class="click font14 fl landing" @click="toUrl('newAddress')">
+              {{$t('nav.login')}}
+            </div>
             <div class="language fr font14 click" @click="selectLanguage">{{lang === 'en' ? '简体中文':'English' }}</div>
           </div>
         </div>
-
       </div>
     </div>
     <div class="cb"></div>
@@ -38,12 +39,14 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import {POCM_API_URL} from '@/config'
+  import {RUN_DEV} from '@/config'
+  import logoBeta from '@/assets/img/logo-beta.svg'
+  import logo from '@/assets/img/logo.svg'
 
   export default {
     data() {
       return {
+        logoSvg: RUN_DEV ? logo : logoBeta,
         activeIndex: '1',//导航选中
         accountInfo: {},//账户信息
         accountAddress: '',//账户地址
@@ -82,12 +85,12 @@
        * @param key
        */
       handleSelect(key) {
-        if (key === 'projects') {
-          this.toUrl('projectsList')
-        } else if (key === 'token') {
-          this.toUrl('newToken')
+        if (key === 'page1') {
+          this.toUrl('page1')
+        } else if (key === 'page2') {
+          this.toUrl('page2')
         } else if (key === 'userInfo') {
-          this.getAuthorization(this.accountInfo.address);
+          //this.getAuthorization(this.accountInfo.address);
         } else if (key === 'backupsAddress') {
           this.toUrl('backupsAddress');
         } else if (key === 'signOut') {
@@ -103,48 +106,6 @@
         this.accountInfo = {};
         this.accountAddress = '';
         this.toUrl('newAddress')
-      },
-
-      /**
-       * @disc: 判断地址是否为创建项目者
-       * @params: address
-       * @date: 2019-08-26 16:58
-       * @author: Wave
-       */
-      async getAuthorization(address) {
-        const url = POCM_API_URL + '/pocm/authorization/list';
-        const data = {address: address};
-        await axios.post(url, data)
-          .then((response) => {
-            //console.log(response.data);
-            if (response.data.success) {
-              if (response.data.data.length === 0) {
-                this.toUrl('user')
-              } else {
-                if (response.data.data[0].status === 0) {
-                  this.$router.push({
-                    name: 'newPocm',
-                    query: {
-                      authorizationCode: response.data.data[0].authorizationCode,
-                      releaseId: response.data.data[0].releaseId
-                    }
-                  })
-                } else {
-                  this.$router.push({
-                    name: 'pocmUser',
-                  });
-                  sessionStorage.setItem("data", JSON.stringify(response.data.data[0]))
-                }
-              }
-            } else {
-              this.toUrl('user');
-              this.$message({message: "对不起，获取项目发布者错误！", type: 'error', duration: 3000});
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-            this.$message({message: "对不起，获取项目发布者异常！", type: 'error', duration: 3000});
-          })
       },
 
       /**

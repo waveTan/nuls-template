@@ -1,6 +1,7 @@
 import nuls from 'nuls-sdk-js'
 import {BigNumber} from 'bignumber.js'
 import {API_CHAIN_ID, API_PREFIX} from '@/config'
+import copy from 'copy-to-clipboard'
 
 /**
  * 10的N 次方
@@ -76,6 +77,12 @@ export function timesDecimals(nu, decimals = 8) {
   let newNu = new BigNumber(Times(nu, Power(decimals)).toString());
   return Number(newNu);
 }
+
+/**
+ * 复制 copy
+ * @param value
+ */
+export const copys = (value) => copy(value);
 
 /**
  * @disc: 验证密码
