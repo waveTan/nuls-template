@@ -111,6 +111,9 @@
       }
       ul {
         margin-top: 8px;
+        @media screen and (max-width: 1024px) {
+          display: none;
+        }
         li {
           padding: 0 5px;
           font-size: 14px;

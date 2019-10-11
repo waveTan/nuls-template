@@ -20,6 +20,21 @@ export default new Router({
       path: '/page2',
       name: 'page2',
       component: resolve => require(['@/views/page2.vue'], resolve)
+    },
+    {
+      path: '/NewAddress',
+      name: 'newAddress',
+      component: resolve => require(['@/views/user/NewAddress.vue'], resolve)
+    },
+    {
+      path: '/BackupsAddress',
+      name: 'backupsAddress',
+      component: resolve => require(['@/views/user/BackupsAddress.vue'], resolve)
+    },
+    {
+      path: '/User',
+      name: 'user',
+      component: resolve => require(['@/views/user/User.vue'], resolve)
     }
 
   ]

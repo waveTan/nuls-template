@@ -328,6 +328,9 @@
               padding: 0 25px;
               margin: 10px 20px 20px;
               border-radius: 4px;
+              @media screen and (max-width: 1024px) {
+                padding: 0 0.5rem;
+              }
               &:hover {
                 background: linear-gradient(to right, #4ef16a, #0ede94);
                 color: #FFFFFF;
@@ -348,9 +351,17 @@
         }
         .import-form {
           margin: 60px auto 0;
+          @media screen and (max-width: 1024px) {
+            margin: 2rem 0 0 0.5rem;
+            width: 96%;
+          }
         }
         .new_address {
           margin: 60px auto 100px;
+          @media screen and (max-width: 1024px) {
+            margin: 2rem 0 0 0.5rem;
+            width: 96%;
+          }
         }
       }
     }

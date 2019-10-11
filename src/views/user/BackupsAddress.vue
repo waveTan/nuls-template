@@ -110,18 +110,34 @@
       .title {
         margin: 20px auto 10px;
         font-size: 30px;
+        @media screen and (max-width: 1024px) {
+          margin: 0 auto;
+          line-height: 4rem;
+        }
       }
     }
     .tab {
       .address {
         margin: 20px auto 0;
         font-size: 18px;
+        @media screen and (max-width: 1024px) {
+          margin: 1rem 0 0 1rem;
+          font-size: 0.8rem;
+        }
       }
       .tips {
         margin: 40px auto;
         padding: 20px 30px;
+        @media screen and (max-width: 1024px) {
+          padding: 1rem 0.8rem;
+          width: 100%;
+        }
         p {
           line-height: 24px;
+          @media screen and (max-width: 1024px) {
+            font-size: 0.7rem;
+            word-wrap:break-word;
+          }
           i {
             width: 5px;
             height: 5px;
@@ -132,6 +148,11 @@
             background: #000000;
           }
         }
+      }
+    }
+    .btn-next{
+      @media screen and (max-width: 1024px) {
+        width: 100%;
       }
     }
   }

@@ -8,7 +8,7 @@
 //开发模式
 export const IS_DEV = process.env.NODE_ENV === 'production';
 //运行环境（true:正式环境，false:测试环境）
-export const RUN_DEV = false;
+export const RUN_DEV = true;
 //链ID
 export const API_CHAIN_ID = 1;
 //链前缀
