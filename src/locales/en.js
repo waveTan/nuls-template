@@ -22,6 +22,7 @@ const en = {
 
   "tips": {
     "password0": "Please enter your password",
+    "password1": "Please enter an 8-20-bit password composed of letters and numbers",
     "tips0": "Please enter your private key",
     "tips1": "Please enter your password again",
     "tips2": "The two passwords do not match",

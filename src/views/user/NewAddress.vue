@@ -94,11 +94,14 @@
       };
 
       let validateNewPass = (rule, value, callback) => {
+        let patrn = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{8,20}$/;
         if (value === '') {
           callback(new Error(this.$t('tips.password0')));
+        } else if (!patrn.exec(value)) {
+          callback(new Error(this.$t('tips.password1')));
         } else {
           if (this.newAddressForm.checkPass !== '') {
-            this.$refs.newAddressForm.validateField('checkPass');
+            this.$refs.newAddressForm.validateField('validateNewCheckPass');
           }
           callback();
         }
