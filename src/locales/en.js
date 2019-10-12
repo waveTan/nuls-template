@@ -53,6 +53,7 @@ const en = {
     "backupsAddress1": "Your address: ",
     "backupsAddress2": "Please set password to import account, transfer money, participate in consensus and other important behavior verification",
     "backupsAddress3": "Please carefully save your wallet password. NULS wallet does not store your password and cannot be retrieved for you. Please remember this",
+    "backupsAddress41": "Backup Keystore",
     "backupsAddress4": "Key backup",
     "backupsAddress5": "Complete backup",
     "backupsAddress6": "Security warning: the private key is not encrypted, the backup is risky, please save it to a safe place, it is recommended to use the Keystore for backup",

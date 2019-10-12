@@ -18,7 +18,7 @@
 
       <div class="w630 tc btn-next">
         <div>
-          <el-button type="success" @click="backupsKeyStore">备份KeyStore</el-button>
+          <el-button type="success" @click="backupsKeyStore">{{$t('backupsAddress.backupsAddress41')}}</el-button>
         </div>
         <div class="mt_20">
           <el-button type="success" @click="backupsKey">{{$t('backupsAddress.backupsAddress4')}}</el-button>

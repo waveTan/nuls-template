@@ -53,6 +53,7 @@ const cn = {
     "backupsAddress1": "您的地址: ",
     "backupsAddress2": "请设置密码用以导入账户、转账、参与共识等重要行为验证",
     "backupsAddress3": "请认真保存钱包密码，NULS钱包不存储密码，也无法帮您找回，请务必牢记",
+    "backupsAddress41": "备份KeyStore",
     "backupsAddress4": "私钥备份",
     "backupsAddress5": "完成备份",
     "backupsAddress6": "安全警告:私钥未经加密，备份存在风险，请保存到安全的地方，建议使用Keystore进行备份",
