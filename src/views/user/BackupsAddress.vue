@@ -18,6 +18,9 @@
 
       <div class="w630 tc btn-next">
         <div>
+          <el-button type="success" @click="backupsKeyStore">备份KeyStore</el-button>
+        </div>
+        <div class="mt_20">
           <el-button type="success" @click="backupsKey">{{$t('backupsAddress.backupsAddress4')}}</el-button>
         </div>
         <div class="mt_20">
@@ -44,10 +47,8 @@
 </template>
 
 <script>
-  import nuls from 'nuls-sdk-js'
   import Password from '@/components/PasswordBar'
-  import {API_CHAIN_ID, API_PREFIX} from '@/config'
-  import {copys} from '@/api/util'
+  import {copys, passwordVerification} from '@/api/util'
 
   export default {
     components: {Password},
@@ -55,6 +56,7 @@
       return {
         accountAddress: JSON.parse(localStorage.getItem('accountInfo')),
         keyDialog: false, //key弹框
+        backupsType: 0,// 备份类型 0:keystore 1:key
       };
     },
     methods: {
@@ -64,11 +66,24 @@
        * @param password
        **/
       async passSubmit(password) {
-        const pri = nuls.decrypteOfAES(this.accountAddress.aesPri, password);
-        const newAddressInfo = nuls.importByKey(API_CHAIN_ID, pri, password, API_PREFIX);
-        if (newAddressInfo.address === this.accountAddress.address) {
+        let isPassword = await passwordVerification(this.accountAddress, password);
+        if (!isPassword.success) {
+          this.$message({message: this.$t('tips.tips4'), type: 'error', duration: 3000});
+          return;
+        }
+        if (this.backupsType === 0) {
+          let FileSaver = require('file-saver');
+          let fileInfo = {
+            address: isPassword.address,
+            encryptedPrivateKey: isPassword.aesPri,
+            pubKey: isPassword.pub,
+            priKey: null
+          };
+          let blob = new Blob([JSON.stringify(fileInfo)], {type: "text/plain;charset=utf-8"});
+          FileSaver.saveAs(blob, isPassword.address + ".keystore");
+        } else {
           this.keyDialog = true;
-          this.accountAddress.pri = pri;
+          this.accountAddress.pri = isPassword.pri;
         }
       },
 
@@ -76,7 +91,26 @@
        *  备份私钥
        **/
       backupsKey() {
+        this.backupsType = 1;
         this.$refs.password.showPassword(true);
+      },
+
+      /**
+       * @disc: 备份keystore
+       * @date: 2019-10-12 14:24
+       * @author: Wave
+       */
+      backupsKeyStore() {
+        try {
+          let isFileSaverSupported = !!new Blob;
+          if (isFileSaverSupported) {
+            this.backupsType = 0;
+            this.$refs.password.showPassword(true);
+          }
+        } catch (e) {
+          this.$message({message: this.$t('tips.tips7'), type: 'error', duration: 3000});
+          console.log(e);
+        }
       },
 
       /**
@@ -136,7 +170,7 @@
           line-height: 24px;
           @media screen and (max-width: 1024px) {
             font-size: 0.7rem;
-            word-wrap:break-word;
+            word-wrap: break-word;
           }
           i {
             width: 5px;
@@ -150,7 +184,7 @@
         }
       }
     }
-    .btn-next{
+    .btn-next {
       @media screen and (max-width: 1024px) {
         width: 100%;
       }

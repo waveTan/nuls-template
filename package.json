@@ -15,6 +15,7 @@
     "copy-to-clipboard": "^3.1.0",
     "cross-env": "^6.0.3",
     "element-ui": "^2.4.5",
+    "file-saver": "^2.0.2",
     "nuls-sdk-js": "^2.2.7",
     "shelljs": "^0.8.3",
     "vue": "^2.6.10",

@@ -96,7 +96,7 @@ export function passwordVerification(accountInfo, password) {
   const pri = nuls.decrypteOfAES(aesPri, password);
   const newAddressInfo = nuls.importByKey(API_CHAIN_ID, pri, password, API_PREFIX);
   if (newAddressInfo.address === accountInfo.address) {
-    return {success: true, pri: pri, pub: accountInfo.pub};
+    return {success: true, pri: pri, pub: accountInfo.pub, address: accountInfo.address,aesPri:newAddressInfo.aesPri};
   } else {
     return {success: false};
   }
