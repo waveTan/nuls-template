@@ -69,7 +69,9 @@
       let validateKeys = (rule, value, callback) => {
         if (value === '') {
           callback(new Error(this.$t('tips.tips0')));
-        } else {
+        } else if (value.length < 60 || value.length > 66) {
+          callback(new Error(this.$t('tips.tips32')));
+        }else {
           callback();
         }
       };

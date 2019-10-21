@@ -31,6 +31,7 @@ const en = {
     "tips5": "Private key import error: ",
     "tips6": "Error in creating address: ",
     "tips7": "Sorry, your browser does not support this method. Please use the latest version of Google Browser.",
+    "tips8": "Private key format error",
     "tips": "",
   },
 
