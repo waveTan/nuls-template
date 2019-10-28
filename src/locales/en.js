@@ -32,6 +32,8 @@ const en = {
     "tips6": "Error in creating address: ",
     "tips7": "Sorry, your browser does not support this method. Please use the latest version of Google Browser.",
     "tips8": "Private key format error",
+    "tips9": "Please choose a password-aware prompt",
+    "tips10": "I understand that I need to keep my password secure",
     "tips": "",
   },
 
