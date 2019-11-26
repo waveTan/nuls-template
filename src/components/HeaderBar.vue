@@ -59,6 +59,7 @@
 
       </div>
     </div>
+    <Password ref="password" @passwordSubmit="passSubmit"></Password>
     <div class="cb"></div>
   </div>
 </template>
@@ -68,6 +69,8 @@
   import logoBeta from '@/assets/img/logo-beta.svg'
   import logo from '@/assets/img/logo.svg'
   import Height from '@/components/Height'
+  import Password from '@/components/PasswordBar'
+  import {passwordVerification} from '@/api/util'
 
   export default {
     data() {
@@ -80,7 +83,7 @@
         isMenu: true,//手机版菜单显示及隐藏
       };
     },
-    components: {Height},
+    components: {Height,Password},
     created() {
     },
     mounted() {
@@ -124,10 +127,36 @@
        * 退出
        */
       signOut() {
-        localStorage.removeItem('accountInfo');
-        this.accountInfo = {};
-        this.accountAddress = '';
-        this.toUrl('newAddress')
+        this.$confirm(this.$t('tips.tips12'), this.$t('tips.tips11'), {
+          confirmButtonText: this.$t('backupsAddress.backupsAddress41'),
+          cancelButtonText: this.$t('nav.signOut'),
+          type: 'warning',
+          showClose: false,
+          closeOnClickModal: false,
+          closeOnPressEscape: false,
+          center: true
+        }).then(() => {
+          this.toUrl('backupsAddress');
+        }).catch(() => {
+          this.$refs.password.showPassword(true);
+        });
+      },
+
+      /**
+       *  获取密码框的密码
+       * @param password
+       **/
+      async passSubmit(password) {
+        let isPassword = await passwordVerification(this.accountInfo, password);
+        if (isPassword.success) {
+          localStorage.removeItem('accountInfo');
+          sessionStorage.removeItem('data');
+          this.accountInfo = {};
+          this.accountAddress = '';
+          this.toUrl('newAddress')
+        } else {
+          this.$message({message: this.$t('tips.tips4'), type: 'error', duration: 3000});
+        }
       },
 
       /**
@@ -294,6 +323,15 @@
         .language {
           width: auto;
           line-height: 56px;
+        }
+      }
+    }
+  }
+  .el-message-box__wrapper {
+    .el-message-box__content {
+      .el-message-box__message {
+        p {
+          color: red;
         }
       }
     }

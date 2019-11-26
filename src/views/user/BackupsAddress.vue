@@ -3,27 +3,27 @@
     <div class="bg-white">
       <h3 class="title tc">{{$t('backupsAddress.backupsAddress0')}}</h3>
     </div>
-    <div class="tab bg-white w1200 mt_30">
+    <div class="bg-white w1200">
       <div class="address w630">
-        <p>
+        <p class="info mt_20 mb_20 pt_20">
           {{$t('backupsAddress.backupsAddress1')}}
           <span class="yellow">{{accountAddress.address}}</span>
-          &nbsp;<i class="el-icon-document-copy click" @click="copy(accountAddress.address)"></i>
+           &nbsp;<i class="el-icon-document-copy click" @click="copy(accountAddress.address)"></i>
         </p>
       </div>
       <div class="tips bg-gray w630">
-        <p class="font14"><i></i> {{$t('backupsAddress.backupsAddress2')}}</p>
-        <p class="font14"><i></i> {{$t('backupsAddress.backupsAddress3')}}</p>
+        <p class="sub_info pl_20"><i></i> {{$t('backupsAddress.backupsAddress2')}}</p>
+        <p class="sub_info pl_20"><i></i> {{$t('backupsAddress.backupsAddress3')}}</p>
       </div>
 
-      <div class="w630 tc btn-next">
-        <div>
-          <el-button type="success" @click="backupsKeyStore">{{$t('backupsAddress.backupsAddress41')}}</el-button>
+      <div class="w630 tc btn-next pb_20">
+        <div class="mt_20">
+          <el-button type="success " @click="backupsKeyStore">{{$t('backupsAddress.backupsAddress41')}}</el-button>
         </div>
         <div class="mt_20">
           <el-button type="success" @click="backupsKey">{{$t('backupsAddress.backupsAddress4')}}</el-button>
         </div>
-        <div class="mt_20">
+        <div class="mt_20 mb_20">
           <el-button @click="toUrl('home')"> {{$t('backupsAddress.backupsAddress5')}}</el-button>
         </div>
       </div>
@@ -140,7 +140,6 @@
 
   .backups-address {
     .bg-white {
-      height: 100px;
       .title {
         margin: 20px auto 10px;
         font-size: 30px;

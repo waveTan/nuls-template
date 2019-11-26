@@ -97,6 +97,10 @@
   .password-dialog {
     .el-dialog {
       width: 370px;
+      .el-dialog__header {
+        padding: 10px;
+        line-height: 26px;
+      }
       .el-dialog__body {
         background-color: #F5F6F9 !important;
         padding: 30px 20px 30px 20px !important;
@@ -112,6 +116,7 @@
       .el-dialog__footer {
         text-align: center;
         background-color: #F5F6F9 !important;
+        line-height: 30px;
         .dialog-footer {
           padding: 1rem 1rem 0.1rem;
           .el-button {
