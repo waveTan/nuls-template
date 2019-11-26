@@ -25,10 +25,10 @@
                 </el-submenu>
               </el-menu>
             </div>
-            <div v-if="!accountAddress" class="click font14 fl landing" @click="toUrl('newAddress')">
+            <div v-if="!accountAddress" class="click fl landing sub_info" @click="toUrl('newAddress')">
               {{$t('nav.login')}}
             </div>
-            <div class="language fr font14 click" @click="selectLanguage">{{lang === 'en' ? '简体中文':'English' }}</div>
+            <div class="language fr click sub_info" @click="selectLanguage">{{lang === 'en' ? '简体中文':'English' }}</div>
           </div>
         </div>
       </div>

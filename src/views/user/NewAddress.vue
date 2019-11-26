@@ -17,7 +17,7 @@
           </div>
         </el-tab-pane>
         <el-tab-pane :label="$t('newAddress.newAddress1')" name="keyImport">
-          <div class="tab bg-white w1200 mt_30">
+          <div class="bg-white w1200 mt_100">
             <el-form :model="importForm" :rules="importRules" ref="importForm" status-icon class="import-form w630">
               <el-form-item :label="$t('newAddress.newAddress6')" prop="keys">
                 <el-input type="textarea" v-model.trim="importForm.keys" autocomplete="off"></el-input>
@@ -28,7 +28,7 @@
               <el-form-item :label="$t('newAddress.newAddress8')" prop="checkPass">
                 <el-input v-model="importForm.checkPass" type="password" autocomplete="off"></el-input>
               </el-form-item>
-              <el-form-item class="form-bnt">
+              <el-form-item class="form-bnt mb_100">
                 <el-button type="success" @click="keyImport('importForm')">{{$t('newAddress.newAddress9')}}</el-button>
               </el-form-item>
             </el-form>
@@ -326,7 +326,7 @@
 <style lang="less">
   .import-address {
     .bg-white {
-      height: 130px;
+      min-height: 130px;
     }
     .new_import {
       margin: -90px auto 100px;
