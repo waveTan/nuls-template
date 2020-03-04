@@ -1,9 +1,9 @@
 <template>
-  <div class="backups-address bg-gray">
+  <div class="backups-address ">
     <div class="bg-white">
       <h3 class="title tc">{{$t('backupsAddress.backupsAddress0')}}</h3>
     </div>
-    <div class="bg-white w1200">
+    <div class="bg-white w1200 tab">
       <div class="address w630">
         <p class="info mt_20 mb_20 pt_20">
           {{$t('backupsAddress.backupsAddress1')}}
@@ -12,8 +12,8 @@
         </p>
       </div>
       <div class="tips bg-gray w630">
-        <p class="sub_info pl_20"><i></i> {{$t('backupsAddress.backupsAddress2')}}</p>
-        <p class="sub_info pl_20"><i></i> {{$t('backupsAddress.backupsAddress3')}}</p>
+        <p class="sub_info "><i></i> {{$t('backupsAddress.backupsAddress2')}}</p>
+        <p class="sub_info "><i></i> {{$t('backupsAddress.backupsAddress3')}}</p>
       </div>
 
       <div class="w630 tc btn-next pb_20">
@@ -143,34 +143,18 @@
       .title {
         margin: 20px auto 10px;
         font-size: 30px;
-        @media screen and (max-width: 1024px) {
-          margin: 0 auto;
-          line-height: 4rem;
-        }
       }
     }
     .tab {
       .address {
-        margin: 20px auto 0;
+        margin: 20px auto;
         font-size: 18px;
-        @media screen and (max-width: 1024px) {
-          margin: 1rem 0 0 1rem;
-          font-size: 0.8rem;
-        }
       }
       .tips {
-        margin: 40px auto;
+        margin: 0 auto 40px;
         padding: 20px 30px;
-        @media screen and (max-width: 1024px) {
-          padding: 1rem 0.8rem;
-          width: 100%;
-        }
         p {
           line-height: 24px;
-          @media screen and (max-width: 1024px) {
-            font-size: 0.7rem;
-            word-wrap: break-word;
-          }
           i {
             width: 5px;
             height: 5px;
@@ -186,6 +170,51 @@
     .btn-next {
       @media screen and (max-width: 1024px) {
         width: 100%;
+      }
+    }
+    @media screen and (max-width: 1000px) {
+      padding: @unit*12;
+      .title-wrap {
+        display: none;
+      }
+      .tab {
+        .address {
+          margin-top: @unit*10;
+          margin-left: 0;
+          .fCN {
+            margin-top: @unit*5;
+            display: inline-block;
+          }
+          p,span,i{
+            font-size: @unit*14;
+            margin-bottom: 0;
+          }
+        }
+        .tips {
+          /*margin: 0.4rem auto;*/
+          padding: @unit*20;
+          p {
+            line-height: @unit*24;
+            font-size: @unit*14;
+            i {
+              width: @unit*5;
+              height: @unit*5;
+              display: block;
+              float: left;
+              margin: @unit*10 @unit*10 0 0;
+              border-radius: @unit*5;
+              background: #000000;
+            }
+          }
+        }
+        .btn-next {
+          .el-button{
+            width: 70%;
+          }
+          .mt_20 {
+            margin-top: @unit*10;
+          }
+        }
       }
     }
   }

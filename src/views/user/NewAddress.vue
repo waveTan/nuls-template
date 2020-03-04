@@ -5,7 +5,7 @@
       <el-tabs v-model="activeName" @tab-click="handleClick" class="new_import w1200">
         <el-tab-pane :label="$t('newAddress.newAddress0')" name="keystoreImport">
           <div class="tc upload_keystore">
-            <el-upload drag class="upload" action="localhost" accept='.keystore' v-if="!isfileReader"
+            <el-upload drag class="upload" action="localhost" :accept="mobile?'*':'.keystore'" v-if="!isfileReader"
                        :before-upload="handleUpload"
                        :multiple="false"
                        :limit="1">
@@ -71,6 +71,7 @@
 
   export default {
     data() {
+      this.mobile =/Android|webOS|iPhone|iPad|BlackBerry/i.test(navigator.userAgent);
       let validateKeys = (rule, value, callback) => {
         if (value === '') {
           callback(new Error(this.$t('tips.tips0')));
@@ -210,6 +211,17 @@
        * @author: Wave
        */
       handleUpload(file) {
+        const name = file.name.split('.')
+        const ext = name[name.length-1]
+        if (ext.toLowerCase()!=='keystore') {
+          this.$message({
+            message: this.$t('tips.keyStore'),
+            type: 'warning',
+            duration: 3000
+          })
+          return
+        }
+
         const reader = new FileReader();
         reader.addEventListener("load", () => {
           //console.log(JSON.parse(reader.result));
@@ -324,6 +336,7 @@
 </script>
 
 <style lang="less">
+  @import "./../../assets/css/style";
   .import-address {
     .bg-white {
       min-height: 130px;
@@ -390,6 +403,93 @@
               margin-top: 5px;
             }
           }
+        }
+      }
+    }
+    @media screen and (max-width: 1000px) {
+      .new_import {
+        padding: @unit*12;
+        .el-tabs__header {
+          padding-bottom: @unit*5;
+          overflow-x: auto;
+          .el-tabs__nav-wrap {
+            .el-tabs__nav-prev,.el-tabs__nav-next {
+              display: none;
+            }
+            &.is-scrollable {
+              padding:0;
+            }
+            .el-tabs__nav-scroll {
+              overflow-x: auto;
+              &::-webkit-scrollbar {display:none}
+              .el-tabs__nav{
+                float: left;
+                .el-tabs__item {
+                  font-size: @unit*14;
+                  height: @unit*30;
+                  line-height: @unit*30;
+                  padding: 0 @unit*12;
+                  text-align: left;
+                  margin: 0;
+                  border-radius: 0;
+                  &:nth-of-type(2) {
+                    padding-right: @unit*10;
+                    padding-left:0;
+                  }
+                  &:last-of-type {
+                    padding-left: @unit*10;
+                    padding-right:0;
+                  }
+                  &:hover,&.is-active {
+                    background: transparent;
+                    color: #303133;
+                  }
+                }
+                .el-tabs__active-bar {
+                  background-color: #0ede94;
+                  height: 2px;
+                }
+
+              }
+            }
+          }
+        }
+        .el-tabs__content {
+          .upload_keystore {
+            padding-top: @unit*100;
+            border: none;
+            .el-upload-dragger {
+              width: @unit*350;
+              height: @unit*180;
+              .el-icon-upload{
+                font-size: @unit*60;
+                margin: @unit*40 0 @unit*16;
+                line-height: @unit*50
+              }
+              .el-upload__text {
+                font-size: @unit*14;
+              }
+            }
+          }
+          .new_address {
+            .el-checkbox__inner {
+              width: @unit*14;
+              height: @unit*14;
+              &:after {
+                width: @unit*3;
+                height: @unit*7;
+                left: @unit*4;
+                top: @unit*1
+              }
+            }
+          }
+        }
+        .el-form .form-bnt {
+          text-align: center;
+        }
+        .el-form .form-bnt .el-button {
+          width: @unit*200;
+          margin-top: @unit*20;
         }
       }
     }

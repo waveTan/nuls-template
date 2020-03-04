@@ -34,7 +34,7 @@ const en = {
     "tips8": "Private key format error",
     "tips9": "Please choose a password-aware prompt",
     "tips10": "I understand that I need to keep my password secure",
-    "tips": "",
+    "keyStore": "Please select the keyStore file",
   },
 
   "newAddress": {

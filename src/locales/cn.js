@@ -36,7 +36,7 @@ const cn = {
     "tips10": "我理解我需要保存好我的密码，否则可能造成资产丢失",
     "tips11": "安全警告",
     "tips12": "移除成功后，账户信息将被彻底删除，请确认已备份好账户私钥或keystore",
-    "tips": "",
+    "keyStore": "请选择keyStore文件",
   },
 
   "newAddress": {
